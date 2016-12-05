@@ -1,3 +1,4 @@
+﻿#2016/12/6
 #project for predicting the protein deformation during protein-protein interaction
 #co-conducted by Paul & Adam
 import copy
