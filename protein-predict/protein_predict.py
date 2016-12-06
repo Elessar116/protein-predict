@@ -6,7 +6,7 @@ import statistics
 
 proteinDir = "./res/allprot.fa"
 labelDir = "./res/label2prot2pair"
-allProteinFile = open(proteinDir,"r")
+allProtein = open(proteinDir,"r")
 labelFile = open(labelDir,"r")
 
 proteinSerial = []
@@ -19,21 +19,21 @@ hydroDict = (dict(hydroListTest))
 
 
 def SeqToHydroList(str):    #function to transfrom amino acid seq into hydropathy index list
-    tempList = []
+    temp = []
     for letter in str:
         if letter !="\n":
-            tempList.append(hydroDict[letter])
-    return tempList
+            temp.append(hydroDict[letter])
+    return temp
 
-for line in allProteinFile:
+for line in allProtein:
     if line[0] == ">":
         proteinSerial.append(line[1:])  #remove ">" and store serial number in list
     else:
         proteinSeq.append(SeqToHydroList(line))         #store sequence in list
 
-noZeroSeq = []
-for seq in proteinSeq:
-    noZeroSeq.append([x for x in seq if x!=0]) #remove 0s in sequence
+noZeroSeq = [[x for x in seq if x!=0] for seq in proteinSeq] #remove 0s in sequence
+#for seq in proteinSeq:
+#    noZeroSeq.append([x for x in seq if x!=0]) 
 
 #print(statistics.stdev(proteinSeq[0]))
 min = 100
@@ -47,57 +47,55 @@ for index in range(len(noZeroSeq[0])-3):     #need at least two element to compu
 
 
 #filter
-startIndex = 0
-nowIndex = 0
-filteredProteinSeq = []
+
 isPositive = noZeroSeq[0][0]>0
 
 oneFilterSeq = copy.deepcopy(noZeroSeq)              #deep copy of list
 
 # first filter gets rid of single pulses
 for i in range(len(noZeroSeq)):
-    removeIndexList = []
+    removeIndex = []
     seqLen = len(noZeroSeq[i])
     if noZeroSeq[i][0]<0 and noZeroSeq[i][1]>0:       #handle first element
-        removeIndexList.append(0)
+        removeIndex.append(0)
     elif noZeroSeq[i][0]>0 and noZeroSeq[i][1]<0:
-        removeIndexList.append(0)
+        removeIndex.append(0)
 
     for j in range(seqLen-2):
         if noZeroSeq[i][j+1] > 0 and noZeroSeq[i][j] < 0 and noZeroSeq[i][j+2] < 0:        #handle others
-            removeIndexList.append(j+1)
+            removeIndex.append(j+1)
         elif noZeroSeq[i][j+1] < 0 and noZeroSeq[i][j] > 0 and noZeroSeq[i][j+2] > 0:
-            removeIndexList.append(j+1)
+            removeIndex.append(j+1)
 
     if noZeroSeq[i][seqLen-2]<0 and noZeroSeq[i][seqLen-1]>0:       #handle last element
-        removeIndexList.append(seqLen-1)
+        removeIndex.append(seqLen-1)
     elif noZeroSeq[i][seqLen-2]>0 and noZeroSeq[i][seqLen-1]<0:
-            removeIndexList.append(seqLen-1)
+            removeIndex.append(seqLen-1)
 
-    for item in list(reversed(removeIndexList)):        #store first filtered sequence
+    for item in list(reversed(removeIndex)):        #store first filtered sequence
         del oneFilterSeq[i][item]
 ######end of first filter
 
 # second filter gets rid of double pulses
 twoFilterSeq = copy.deepcopy(oneFilterSeq)          #deep copy of list
 for i in range(len(oneFilterSeq)):
-    removeIndexList = []
+    removeIndex = []
     seqLen = len(oneFilterSeq[i])
     if oneFilterSeq[i][0]>0 and oneFilterSeq[i][1]>0 and oneFilterSeq[i][2]<0: #handle first two elements
-        removeIndexList.append(0)
+        removeIndex.append(0)
     elif oneFilterSeq[i][0]<0 and oneFilterSeq[i][1]<0 and oneFilterSeq[i][2]>0:
-        removeIndexList.append(0)
+        removeIndex.append(0)
     for j in range(seqLen-3):
         if oneFilterSeq[i][j+1]>0 and oneFilterSeq[i][j+2]>0 and oneFilterSeq[i][j]<0 and oneFilterSeq[i][j+3]<0:   #handle other elements
-            removeIndexList.append(j+1)
+            removeIndex.append(j+1)
         elif oneFilterSeq[i][j+1]<0 and oneFilterSeq[i][j+2]<0 and oneFilterSeq[i][j]>0 and oneFilterSeq[i][j+3]>0:
-            removeIndexList.append(j+1)
+            removeIndex.append(j+1)
     if oneFilterSeq[i][seqLen-1]>0 and oneFilterSeq[i][seqLen-2]>0 and oneFilterSeq[i][seqLen-3]<0: #handle last two elements
-        removeIndexList.append(seqLen-2)
+        removeIndex.append(seqLen-2)
     elif oneFilterSeq[i][seqLen-1]<0 and oneFilterSeq[i][seqLen-2]<0 and oneFilterSeq[i][seqLen-3]>0:
-        removeIndexList.append(seqLen-2)
+        removeIndex.append(seqLen-2)
 
-    for item in list(reversed(removeIndexList)):    #store second filterd sequence
+    for item in list(reversed(removeIndex)):    #store second filterd sequence
         del twoFilterSeq[i][item+1]
         del twoFilterSeq[i][item]
 
@@ -114,3 +112,15 @@ excelFile1.close()
 for i in twoFilterSeq[0]:
     excelFile2.write(str(i)+"\n")
 excelFile2.close()
+
+#helllo
+#helllo
+#helllo
+#helllo
+#helllo
+#helllo
+#helllo
+
+#helllo
+
+#helllo101010101101010
