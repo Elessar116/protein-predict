@@ -1,10 +1,10 @@
-#project for predicting the protein deformation during protein-protein interaction
+﻿#project for predicting the protein deformation during protein-protein interaction
 #co-conducted by Paul & Adam
 import copy
 import statistics
 import os 
 import time
-tStart = time.time()
+import pprint
 proteinDir = "./res/allprot.fa"
 labelDir = "./res/label2prot2pair"
 allProtein = open(proteinDir,"r")
@@ -33,17 +33,9 @@ for line in allProtein:
     else:
         proteinSeq.append(SeqToHydroList(line))         #store sequence in list
 
-#print(proteinSeq[0])
-#for temp in proteinSeq:
-#    print(temp)
-#    os.system("pause")
+
 noZeroSeq = [[x for x in seq if x!=0] for seq in proteinSeq] #remove 0s in sequence
-#print(noZeroSeq[0])
 
-#for seq in proteinSeq:
-#    noZeroSeq.append([x for x in seq if x!=0]) 
-
-#print(statistics.stdev(proteinSeq[0]))
 min = 100
 minIndex = 0
 
@@ -55,8 +47,6 @@ for index in range(len(noZeroSeq[0])-3):     #need at least two element to compu
 
 
 #filter
-
-
 
 oneFilterSeq = copy.deepcopy(noZeroSeq)              #deep copy of list
 
@@ -102,14 +92,10 @@ for i in range(len(oneFilterSeq)):
 
 #####end of second filter
 
-tEnd = time.time()
-print(tEnd - tStart)
+
 #export file for excel analysis
 excelFile1 = open("proteinOneFilter.txt","w")   
 excelFile2 = open("proteinTwoFilter.txt","w")
-
-
-
 
 
 for i in oneFilterSeq[0]:
@@ -140,5 +126,34 @@ for i in range(len(twoFilterSeq)):
     
     del eachAccum[:] #清空每行累加結果
 
+featureTable = {"1 1 1 1":1,"1 1 1 -1":2,"-1 1 1 1":2,"1 1 -1 1":3,"1 -1 1 1":3,"1 1 -1 -1":4,"-1 -1 1 1":4,"1 -1 1 -1":5,"-1 1 -1 1":5,\
+                "1 -1 -1 1":6,"1 -1 -1 -1":7,"-1 -1 -1 1":7,"-1 1 1 -1":8,"-1 1 -1 -1":9,"-1 -1 1 -1":9,"-1 -1 -1 -1":10}
 
-        
+
+trainData = open("train-data","w")      #open train data
+testData = open("test-data","w")        #open test data
+
+for i,line in enumerate(labelFile):     #write train data
+    if i< 500:
+        index = proteinSerial.index(line.split()[1]+"\n")   #find index of protein in protein serial
+        if len(hydroFeature[index]) == 4:
+            temp = " ".join(map(str,hydroFeature[index]))   #transform list to str for search in dict
+            feature = str(featureTable[temp])               #search feature table for feature
+            trainData.write(line.split()[0] + " " + feature + "\n")
+        else:
+            trainData.write(line.split()[0]+ " 11\n")       #deal with short proteins
+labelFile.close()
+labelFile = open(labelDir,"r")          #re-open file
+for i,line in enumerate(labelFile):     #write test data
+    if i>= 500:
+        index = proteinSerial.index(line.split()[1]+"\n")
+        if len(hydroFeature[index]) == 4:
+            temp = " ".join(map(str,hydroFeature[index]))
+            feature = str(featureTable[temp])
+            testData.write(line.split()[0] + " " + feature + "\n")
+        else:
+            testData.write(line.split()[0]+ " 11\n")
+trainData.close()
+testData.close()
+labelFile.close()
+allProtein.close()
