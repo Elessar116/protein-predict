@@ -139,9 +139,9 @@ for i,line in enumerate(labelFile):     #write train data
         if len(hydroFeature[index]) == 4:
             temp = " ".join(map(str,hydroFeature[index]))   #transform list to str for search in dict
             feature = str(featureTable[temp])               #search feature table for feature
-            trainData.write(line.split()[0] + " " + feature + "\n")
+            trainData.write(line.split()[0] + " 1:" + feature + "\n")
         else:
-            trainData.write(line.split()[0]+ " 11\n")       #deal with short proteins
+            trainData.write(line.split()[0] + " 1:11\n")       #deal with short proteins
 labelFile.close()
 labelFile = open(labelDir,"r")          #re-open file
 for i,line in enumerate(labelFile):     #write test data
@@ -150,9 +150,9 @@ for i,line in enumerate(labelFile):     #write test data
         if len(hydroFeature[index]) == 4:
             temp = " ".join(map(str,hydroFeature[index]))
             feature = str(featureTable[temp])
-            testData.write(line.split()[0] + " " + feature + "\n")
+            testData.write(line.split()[0] + " 1:" + feature + "\n")
         else:
-            testData.write(line.split()[0]+ " 11\n")
+            testData.write(line.split()[0] + " 1:11\n")
 trainData.close()
 testData.close()
 labelFile.close()
