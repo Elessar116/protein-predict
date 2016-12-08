@@ -153,6 +153,22 @@ for i,line in enumerate(labelFile):     #write test data
             testData.write(line.split()[0] + " 1:" + feature + "\n")
         else:
             testData.write(line.split()[0] + " 1:11\n")
+vaFile = open("./res/va50-lst","r")
+predictData = open("predict-data","w")
+for line in vaFile:
+    index = proteinSerial.index(line.split()[0] + "\n")
+    if len(hydroFeature[index]) == 4:
+        temp = " ".join(map(str,hydroFeature[index]))
+        feature = str(featureTable[temp])
+        predictData.write("0" + " 1:" + feature + "\n")
+    else:
+        predictData.write("0" + " 1:11\n")
+#predictData.close()
+#predictData = open("predict-data","r")
+#for i in predictData:
+#    print(i)
+predictData.close()
+vaFile.close()
 trainData.close()
 testData.close()
 labelFile.close()
