@@ -96,8 +96,8 @@ for i in range(len(oneFilterSeq)):
 
 
 #export file for excel analysis
-excelFile1 = open("proteinOneFilter.txt","w")   
-excelFile2 = open("proteinTwoFilter.txt","w")
+excelFile1 = open("./data/proteinOneFilter.txt","w")   
+excelFile2 = open("./data/proteinTwoFilter.txt","w")
 
 
 for i in oneFilterSeq[0]:
@@ -133,7 +133,7 @@ accumLen=[]       #store each the amount of each segment
 for i in range(50,7000,50):    
     accumLen.append(len([ x for x in proteinLen if x<i and x>=i-50 ])) #count the amount of length in region i-50~i
 
-excelFile3 = open("sortedProteinLength.txt","w")   
+excelFile3 = open("./data/sortedProteinLength.txt","w")   
 for i in accumLen:
     excelFile3.write(str(i)+"\n")
 excelFile3.close()
@@ -165,19 +165,20 @@ for i,line in enumerate(labelFile):     #write train data
         if len(hydroFeature[index]) == 4:  
            
             temp = " ".join(map(str,hydroFeature[index]))   #transform list to str for search in dict
-            
+            feature2=str(SepLen(proteinLen[index]))
             feature = str(featureTable[temp])               #search feature table for feature
-            if line.split()[0]==1:
-                trainData.write(line.split()[0] + " 1:" + feature)
-                trainData.write(line.split()[0] + " 1:" + feature)
-                trainData.write(line.split()[0] + " 1:" + feature)
-                trainData.write(line.split()[0] + " 1:" + feature)
+            if line.split()[0]=="1":
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2+"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2+"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2+"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2+"\n")
+            else:
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2+"\n")
         else:
-            trainData.write(line.split()[0] + " 1:11")       #deal with short proteins
-
-      
-        feature2=str(SepLen(proteinLen[index]))
-        trainData.write(" 2:" + feature2+"\n")
+            if line.split()[0]=="1":
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2+"\n")       #deal with short proteins
+            else:
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2+"\n")
         
 
 labelFile.close()
