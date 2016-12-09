@@ -168,7 +168,7 @@ for i,line in enumerate(labelFile):     #write train data
             feature2=str(SepLen(proteinLen[index]))
             feature = str(featureTable[temp])               #search feature table for feature
             if line.split()[0]=="1":
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2+"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2+"\n")  #write four times if label equals to 1
                 trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2+"\n")
                 trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2+"\n")
                 trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2+"\n")
@@ -177,6 +177,9 @@ for i,line in enumerate(labelFile):     #write train data
         else:
             if line.split()[0]=="1":
                 trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2+"\n")       #deal with short proteins
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2+"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2+"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2+"\n")
             else:
                 trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2+"\n")
         
@@ -200,7 +203,7 @@ for i,line in enumerate(labelFile):     #write test data
 
 vaFile = open("./res/va50-lst","r")
 predictData = open("predict-data","w")
-for line in vaFile:
+for line in vaFile:     #take VA50 and write predict-data
     index = proteinSerial.index(line.split()[0] + "\n")
     if len(hydroFeature[index]) == 4:
         temp = " ".join(map(str,hydroFeature[index]))
