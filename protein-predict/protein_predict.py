@@ -215,12 +215,22 @@ for line in vaFile:     #take VA50 and write predict-data
     feature2=str(SepLen(proteinLen[index]))
     predictData.write(" 2:" + feature2+"\n")
 
+forGraphic = open("./data/forGraphic.txt","w")
+labelFile.close()
+labelFile = open(labelDir,"r")          #re-open file
+numOfPos = 0
+numOfNeg = 0
+for line in labelFile:
+    index = proteinSerial.index(line.split()[1]+"\n")
+    if numOfPos != 10 and line.split()[0] == "1":
+        numOfPos += 1
+        temp = " ".join(map(str,twoFilterSeq[index]))
+        forGraphic.write("1 " + temp + "\n")
+    elif numOfNeg != 10 and line.split()[0] == "-1":
+        numOfNeg += 1
+        temp = " ".join(map(str,twoFilterSeq[index]))
+        forGraphic.write("-1 " + temp + "\n")
 
-
-#predictData.close()
-#predictData = open("predict-data","r")
-#for i in predictData:
-#    print(i)
 predictData.close()
 vaFile.close()
 trainData.close()
