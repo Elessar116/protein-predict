@@ -162,26 +162,29 @@ def SepLen(x):     #transform length to feature
 for i,line in enumerate(labelFile):     #write train data
     if i< 500:
         index = proteinSerial.index(line.split()[1]+"\n")   #find index of protein in protein serial
-        if len(hydroFeature[index]) == 4:  
-           
+        feature2 = str(SepLen(proteinLen[index]))
+        feature3 = str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
+        if len(hydroFeature[index]) == 4:
             temp = " ".join(map(str,hydroFeature[index]))   #transform list to str for search in dict
-            feature2=str(SepLen(proteinLen[index]))
             feature = str(featureTable[temp])               #search feature table for feature
+            
             if line.split()[0]=="1":
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2+"\n")  #write four times if label equals to 1
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2+"\n")
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2+"\n")
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2+"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 +"\n")  #write four times if label equals to 1
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 +"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 +"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 +"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 +"\n")
             else:
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2+"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 +"\n")
         else:
             if line.split()[0]=="1":
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2+"\n")       #deal with short proteins
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2+"\n")
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2+"\n")
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2+"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 +"\n")       #deal with short proteins
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 +"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 +"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 +"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 +"\n")
             else:
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2+"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 +"\n")
         
 
 labelFile.close()
@@ -189,6 +192,8 @@ labelFile = open(labelDir,"r")          #re-open file
 for i,line in enumerate(labelFile):     #write test data
     if i>= 500:
         index = proteinSerial.index(line.split()[1]+"\n")
+        feature2=str(SepLen(proteinLen[index]))
+        feature3 = str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
         if len(hydroFeature[index]) == 4:
             temp = " ".join(map(str,hydroFeature[index]))
             feature = str(featureTable[temp])
@@ -196,24 +201,25 @@ for i,line in enumerate(labelFile):     #write test data
         else:
             testData.write(line.split()[0] + " 1:11")
 
-        feature2=str(SepLen(proteinLen[index]))
-        testData.write(" 2:" + feature2+"\n")
+        
+        testData.write(" 2:" + feature2 + " 3:" + feature3 +"\n")
 
 
 
 vaFile = open("./res/va50-lst","r")
 predictData = open("predict-data","w")
-for line in vaFile:     #take VA50 and write predict-data
+for line in vaFile:                     #take VA50 and write predict-data
     index = proteinSerial.index(line.split()[0] + "\n")
+    feature2=str(SepLen(proteinLen[index]))
+    feature3 = str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
     if len(hydroFeature[index]) == 4:
         temp = " ".join(map(str,hydroFeature[index]))
         feature = str(featureTable[temp])
         predictData.write("0" + " 1:" + feature)
     else:
         predictData.write("0" + " 1:11")
-
-    feature2=str(SepLen(proteinLen[index]))
-    predictData.write(" 2:" + feature2+"\n")
+    
+    predictData.write(" 2:" + feature2 + " 3:" + feature3 +"\n")
 
 
 
