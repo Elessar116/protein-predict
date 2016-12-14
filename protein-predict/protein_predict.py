@@ -111,15 +111,22 @@ excelFile2.close()
 temp=0      #存取每一個index前一個變數
 eachAccum=[]  #每一列相同符號的數字個數相加
 hydroFeature=[] #最後輸出二維list
+alterCount=0 #計算交錯記數
+alterNumber=[] #儲存交錯次數列表
+
 for i in range(len(twoFilterSeq)):
     count=0 #算個數
     for j,item in  enumerate(twoFilterSeq[i]): #每一行的每一個胺基酸親水指數       
         if item*temp<0:  #切換數字正負號時進入           
             eachAccum.append(count*int(temp/abs(temp)))  #前面的count都是正，乘上數字正負號                              
             count=1
+            alterCount+=1
         else:
             count+=1
         temp=item
+    alterNumber.append(alterCount/len(twoFilterSeq[i])) #數量結果除以長度存進去
+        
+    alterCount=0
     eachAccum.append(count*int(temp/abs(temp))) #最後一組不會切換正負號所以直接加入count的結果沒關係
     sortedAccum=sorted(range(len(eachAccum)), key=lambda k: abs(eachAccum[k]), reverse=True)   #將所有數字轉正號排序方便取下前四名
     tempList=sortedAccum=sorted(sortedAccum[0:4]) #將前四名順序再次排序
@@ -164,27 +171,28 @@ for i,line in enumerate(labelFile):     #write train data
         index = proteinSerial.index(line.split()[1]+"\n")   #find index of protein in protein serial
         feature2 = str(SepLen(proteinLen[index]))
         feature3 = str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
+        feature4 = str(alterNumber[index])
         if len(hydroFeature[index]) == 4:
             temp = " ".join(map(str,hydroFeature[index]))   #transform list to str for search in dict
             feature = str(featureTable[temp])               #search feature table for feature
             
             if line.split()[0]=="1":
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 +"\n")  #write four times if label equals to 1
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 +"\n")
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 +"\n")
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 +"\n")
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 +"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4+"\n")  #write four times if label equals to 1
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4+"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4+"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4+"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4+"\n")
             else:
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 +"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4+"\n")
         else:
             if line.split()[0]=="1":
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 +"\n")       #deal with short proteins
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 +"\n")
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 +"\n")
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 +"\n")
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 +"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4+"\n")       #deal with short proteins
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4+"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4+"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4+"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4+"\n")
             else:
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 +"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4+"\n")
         
 
 labelFile.close()
@@ -194,6 +202,7 @@ for i,line in enumerate(labelFile):     #write test data
         index = proteinSerial.index(line.split()[1]+"\n")
         feature2=str(SepLen(proteinLen[index]))
         feature3 = str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
+        feature4=str(alterNumber[index])
         if len(hydroFeature[index]) == 4:
             temp = " ".join(map(str,hydroFeature[index]))
             feature = str(featureTable[temp])
@@ -202,7 +211,7 @@ for i,line in enumerate(labelFile):     #write test data
             testData.write(line.split()[0] + " 1:11")
 
         
-        testData.write(" 2:" + feature2 + " 3:" + feature3 +"\n")
+        testData.write(" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4+"\n")
 
 
 
@@ -211,7 +220,8 @@ predictData = open("predict-data","w")
 for line in vaFile:                     #take VA50 and write predict-data
     index = proteinSerial.index(line.split()[0] + "\n")
     feature2=str(SepLen(proteinLen[index]))
-    feature3 = str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
+    feature3 =str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
+    feature4=str(alterNumber[index])
     if len(hydroFeature[index]) == 4:
         temp = " ".join(map(str,hydroFeature[index]))
         feature = str(featureTable[temp])
@@ -219,7 +229,7 @@ for line in vaFile:                     #take VA50 and write predict-data
     else:
         predictData.write("0" + " 1:11")
     
-    predictData.write(" 2:" + feature2 + " 3:" + feature3 +"\n")
+    predictData.write(" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4+"\n")
 
 
 
