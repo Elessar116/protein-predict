@@ -22,6 +22,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="feature-evaluate.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="get_result.py">
       <SubType>Code</SubType>
     </Compile>
