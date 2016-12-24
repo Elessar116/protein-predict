@@ -148,7 +148,9 @@ featureTable = {"1 1 1 1":1,"1 1 1 -1":2,"-1 1 1 1":2,"1 1 -1 1":3,"1 -1 1 1":3,
 
 trainData = open("train-data","w")      #open train data
 testData = open("test-data","w")        #open test data
- 
+specialData = open("./data/special-feature.txt","w")        #特別存取6 8 的結果
+twoFilterLengthData = open("./data/twoFilterLengthData.txt","w")        #特別存取6 8 的結果
+
 def SepLen(x):     #transform length to feature
         if x<150:
             return 1
@@ -159,6 +161,15 @@ def SepLen(x):     #transform length to feature
         else: 
             return 4
 
+
+for i,line in enumerate(labelFile):     #挑出長的觀察
+    index = proteinSerial.index(line.split()[1]+"\n")   #find index of protein in protein serial
+    if len(twoFilterSeq[index])>400: #這挑出大於400的看
+        twoFilterLengthData.write(line.split()[1]+" ")
+        twoFilterLengthData.write(line.split()[0])
+        twoFilterLengthData.write(" "+str(len(twoFilterSeq[index])))
+        twoFilterLengthData.write("\n")
+
 for i,line in enumerate(labelFile):     #write train data
     if i< 500:
         index = proteinSerial.index(line.split()[1]+"\n")   #find index of protein in protein serial
@@ -167,6 +178,15 @@ for i,line in enumerate(labelFile):     #write train data
             temp = " ".join(map(str,hydroFeature[index]))   #transform list to str for search in dict
             feature2=str(SepLen(proteinLen[index]))
             feature = str(featureTable[temp])               #search feature table for feature
+           
+            if feature=="6": #將feature1特徵為6的紀錄
+                
+                specialData.write(line.split()[1]+" ")
+                specialData.write(line.split()[0])
+                for i in twoFilterSeq[index]:
+                    specialData.write(" "+str(i))
+                specialData.write("\n")  
+              
             if line.split()[0]=="1":
                 trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2+"\n")  #write four times if label equals to 1
                 trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2+"\n")
@@ -192,6 +212,15 @@ for i,line in enumerate(labelFile):     #write test data
         if len(hydroFeature[index]) == 4:
             temp = " ".join(map(str,hydroFeature[index]))
             feature = str(featureTable[temp])
+            
+            if feature=="6":
+                
+                specialData.write(line.split()[1]+" ")
+                specialData.write(line.split()[0])
+                for i in twoFilterSeq[index]:
+                    specialData.write(" "+str(i))
+                specialData.write("\n")  
+
             testData.write(line.split()[0] + " 1:" + feature)
         else:
             testData.write(line.split()[0] + " 1:11")
@@ -237,3 +266,5 @@ trainData.close()
 testData.close()
 labelFile.close()
 allProtein.close()
+specialData.close()
+twoFilterLengthData.close()
