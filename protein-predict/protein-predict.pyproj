@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>672721a4-a05e-4726-9325-7b88a729c1a9</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>feature-evaluate.py</StartupFile>
+    <StartupFile>protein_predict.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>

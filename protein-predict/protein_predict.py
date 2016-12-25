@@ -181,6 +181,7 @@ def SepLen(x):     #transform length to feature
         else: 
             return 4
 
+
 for i,line in enumerate(labelFile):     #write train data
     if i< 500:
         index = proteinSerial.index(line.split()[1]+"\n")   #find index of protein in protein serial
