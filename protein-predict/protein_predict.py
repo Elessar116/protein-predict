@@ -110,7 +110,9 @@ excelFile2.close()
 
 temp=0      #存取每一個index前一個變數
 eachAccum=[]  #每一列相同符號的數字個數相加
-hydroFeature=[] #最後輸出二維list
+hydroFeature1=[] #最後輸出二維list，紀錄前四名
+hydroFeature2=[] #最後輸出二維list，紀錄前五名
+hydroFeature3=[] #最後輸出二維list，紀錄前六名
 alterCount=0 #計算交錯記數
 alterNumber=[] #儲存交錯次數列表
 
@@ -128,9 +130,15 @@ for i in range(len(twoFilterSeq)):
         
     alterCount=0
     eachAccum.append(count*int(temp/abs(temp))) #最後一組不會切換正負號所以直接加入count的結果沒關係
-    sortedAccum=sorted(range(len(eachAccum)), key=lambda k: abs(eachAccum[k]), reverse=True)   #將所有數字轉正號排序方便取下前四名
-    tempList=sortedAccum=sorted(sortedAccum[0:4]) #將前四名順序再次排序
-    hydroFeature.append([int(eachAccum[y]/abs(eachAccum[y])) for y in tempList]) #透過四個名次索引值取出後判斷正負號存入
+    sortedAccum=sorted(range(len(eachAccum)), key=lambda k: abs(eachAccum[k]), reverse=True)   #將所有數字轉正號排序用引數記錄
+    tempList=sorted(sortedAccum[0:4])  #將前四名順序再次排序
+    tempList2=sorted(sortedAccum[0:5]) #將前五名順序再次排序
+    tempList3=sorted(sortedAccum[0:6]) #將前六名順序再次排序
+
+    hydroFeature1.append([int(eachAccum[y]/abs(eachAccum[y])) for y in tempList]) #透過四個名次索引值取出後判斷正負號存入
+    hydroFeature2.append([int(eachAccum[y]/abs(eachAccum[y])) for y in tempList2]) #透過五個名次索引值取出後判斷正負號存入
+    hydroFeature3.append([int(eachAccum[y]/abs(eachAccum[y])) for y in tempList3]) #透過六個名次索引值取出後判斷正負號存入
+
     temp=0    #每行結束將temp初始化為0，才不會影響下一組正負號切換
     
     del eachAccum[:] #清空每行累加結果
@@ -172,8 +180,8 @@ for i,line in enumerate(labelFile):     #write train data
         feature2 = str(SepLen(proteinLen[index]))
         feature3 = str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
         feature4 = str(alterNumber[index])
-        if len(hydroFeature[index]) == 4:
-            temp = " ".join(map(str,hydroFeature[index]))   #transform list to str for search in dict
+        if len(hydroFeature1[index]) == 4:
+            temp = " ".join(map(str,hydroFeature1[index]))   #transform list to str for search in dict
             feature = str(featureTable[temp])               #search feature table for feature
             
             if line.split()[0]=="1":
@@ -203,8 +211,8 @@ for i,line in enumerate(labelFile):     #write test data
         feature2=str(SepLen(proteinLen[index]))
         feature3 = str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
         feature4=str(alterNumber[index])
-        if len(hydroFeature[index]) == 4:
-            temp = " ".join(map(str,hydroFeature[index]))
+        if len(hydroFeature1[index]) == 4:
+            temp = " ".join(map(str,hydroFeature1[index]))
             feature = str(featureTable[temp])
             testData.write(line.split()[0] + " 1:" + feature)
         else:
@@ -222,8 +230,8 @@ for line in vaFile:                     #take VA50 and write predict-data
     feature2=str(SepLen(proteinLen[index]))
     feature3 =str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
     feature4=str(alterNumber[index])
-    if len(hydroFeature[index]) == 4:
-        temp = " ".join(map(str,hydroFeature[index]))
+    if len(hydroFeature1[index]) == 4:
+        temp = " ".join(map(str,hydroFeature1[index]))
         feature = str(featureTable[temp])
         predictData.write("0" + " 1:" + feature)
     else:
