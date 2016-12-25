@@ -213,7 +213,7 @@ for line in vaFile:                     #take VA50 and write predict-data
     feature3 =str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
     feature4=str(alterNumber[index])
         
-    predictData.write(line.split()[0] +" 1:" + feature3 + " 2:" + feature4 +"\n")
+    predictData.write("0" +" 1:" + feature3 + " 2:" + feature4 +"\n")
 
 
 
