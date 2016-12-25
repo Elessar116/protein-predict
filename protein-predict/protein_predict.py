@@ -223,7 +223,7 @@ for i,line in enumerate(labelFile):     #write test data
 
 
 
-vaFile = open("./res/va50-lst","r")
+vaFile = open("./res/vate100-lst","r")
 predictData = open("predict-data","w")
 for line in vaFile:                     #take VA50 and write predict-data
     index = proteinSerial.index(line.split()[0] + "\n")
