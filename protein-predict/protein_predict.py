@@ -215,8 +215,6 @@ for line in vaFile:                     #take VA50 and write predict-data
         
     predictData.write("0" +" 1:" + feature3 + " 2:" + feature4 +"\n")
 
-
-
 #predictData.close()
 #predictData = open("predict-data","r")
 #for i in predictData:
