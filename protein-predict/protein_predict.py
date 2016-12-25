@@ -180,27 +180,16 @@ for i,line in enumerate(labelFile):     #write train data
         feature2 = str(SepLen(proteinLen[index]))
         feature3 = str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
         feature4 = str(alterNumber[index])
-        if len(hydroFeature1[index]) == 4:
-            temp = " ".join(map(str,hydroFeature1[index]))   #transform list to str for search in dict
-            feature = str(featureTable[temp])               #search feature table for feature
-            
-            if line.split()[0]=="1":
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature3 + " 3:" + feature4 +"\n")  #write four times if label equals to 1
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature3 + " 3:" + feature4 +"\n")
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature3 + " 3:" + feature4 +"\n")
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature3 + " 3:" + feature4 +"\n")
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature3 + " 3:" + feature4 +"\n")
-            else:
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature3 + " 3:" + feature4 +"\n")
+                    
+        if line.split()[0]=="1":
+            trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 +"\n")  #write four times if label equals to 1
+            trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 +"\n")
+            trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 +"\n")
+            trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 +"\n")
+            trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 +"\n")
         else:
-            if line.split()[0]=="1":
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature3 + " 3:" + feature4 +"\n")       #deal with short proteins
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature3 + " 3:" + feature4 +"\n")
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature3 + " 3:" + feature4 +"\n")
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature3 + " 3:" + feature4 +"\n")
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature3 + " 3:" + feature4 +"\n")
-            else:
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature3 + " 3:" + feature4 +"\n")
+            trainData.write(line.split()[0] + " 1:" + featur3 + " 2:" + feature4 +"\n")
+        
         
 
 labelFile.close()
@@ -211,15 +200,8 @@ for i,line in enumerate(labelFile):     #write test data
         feature2=str(SepLen(proteinLen[index]))
         feature3 = str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
         feature4=str(alterNumber[index])
-        if len(hydroFeature1[index]) == 4:
-            temp = " ".join(map(str,hydroFeature1[index]))
-            feature = str(featureTable[temp])
-            testData.write(line.split()[0] + " 1:" + feature)
-        else:
-            testData.write(line.split()[0] + " 1:11")
-
-        
-        testData.write(" 2:" + feature3 + " 3:" + feature4 +"\n")
+                
+        testData.write(line.split()[0] +" 1:" + feature3 + " 2:" + feature4 +"\n")
 
 
 
@@ -230,14 +212,8 @@ for line in vaFile:                     #take VA50 and write predict-data
     feature2=str(SepLen(proteinLen[index]))
     feature3 =str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
     feature4=str(alterNumber[index])
-    if len(hydroFeature1[index]) == 4:
-        temp = " ".join(map(str,hydroFeature1[index]))
-        feature = str(featureTable[temp])
-        predictData.write("0" + " 1:" + feature)
-    else:
-        predictData.write("0" + " 1:11")
-    
-    predictData.write(" 2:" + feature3 + " 3:" + feature4 +"\n")
+        
+    predictData.write(line.split()[0] +" 1:" + feature3 + " 2:" + feature4 +"\n")
 
 
 
