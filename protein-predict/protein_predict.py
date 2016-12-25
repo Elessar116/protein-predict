@@ -194,22 +194,22 @@ for i,line in enumerate(labelFile):     #write train data
             feature5 = str(featureTable2[temp2])
             #print(feature5)
             if line.split()[0]=="1":
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 + " 5:" + feature5 + "\n")  #write four times if label equals to 1
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 + " 5:" + feature5 +"\n")
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 + " 5:" + feature5 + "\n")
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 + " 5:" + feature5 +"\n")
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 + " 5:" + feature5 +"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 +"\n")  #write four times if label equals to 1
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 +"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 +"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 +"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 +"\n")
             else:
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 + " 5:" + feature5 +"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 +"\n")
         else:
             if line.split()[0]=="1":
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 + " 5:21" +"\n")       #deal with short proteins
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 + " 5:21" +"\n")
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 + " 5:21" +"\n")
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 + " 5:21" +"\n")
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 + " 5:21" +"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 +"\n")       #deal with short proteins
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 +"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 +"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 +"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 +"\n")
             else:
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 + " 5:21" +"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 +"\n")
         
 
 labelFile.close()
@@ -231,9 +231,9 @@ for i,line in enumerate(labelFile):     #write test data
         if len(hydroFeature2[index])==5:
             temp2 = " ".join(map(str,hydroFeature2[index]))
             feature5 = str(featureTable2[temp2])
-            testData.write(" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 + " 5:" + feature5 +"\n")
+            testData.write(" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 +"\n")
         else:
-            testData.write(" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 + " 5:21" +"\n")
+            testData.write(" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 +"\n")
 
 
 
