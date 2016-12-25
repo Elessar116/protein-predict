@@ -188,7 +188,7 @@ for i,line in enumerate(labelFile):     #write train data
             trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 +"\n")
             trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 +"\n")
         else:
-            trainData.write(line.split()[0] + " 1:" + featur3 + " 2:" + feature4 +"\n")
+            trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 +"\n")
         
         
 
