@@ -185,22 +185,22 @@ for i,line in enumerate(labelFile):     #write train data
             feature = str(featureTable[temp])               #search feature table for feature
             
             if line.split()[0]=="1":
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 +"\n")  #write four times if label equals to 1
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 +"\n")
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 +"\n")
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 +"\n")
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 +"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature4 +"\n")  #write four times if label equals to 1
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature4 +"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature4 +"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature4 +"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature4 +"\n")
             else:
-                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature3 +"\n")
+                trainData.write(line.split()[0] + " 1:" + feature + " 2:" + feature2 + " 3:" + feature4 +"\n")
         else:
             if line.split()[0]=="1":
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 +"\n")       #deal with short proteins
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 +"\n")
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 +"\n")
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 +"\n")
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 +"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature4 +"\n")       #deal with short proteins
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature4 +"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature4 +"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature4 +"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature4 +"\n")
             else:
-                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature3 +"\n")
+                trainData.write(line.split()[0] + " 1:11" +" 2:" + feature2 + " 3:" + feature4 +"\n")
         
 
 labelFile.close()
@@ -219,7 +219,7 @@ for i,line in enumerate(labelFile):     #write test data
             testData.write(line.split()[0] + " 1:11")
 
         
-        testData.write(" 2:" + feature2 + " 3:" + feature3 +"\n")
+        testData.write(" 2:" + feature2 + " 3:" + feature4 +"\n")
 
 
 
@@ -237,7 +237,7 @@ for line in vaFile:                     #take VA50 and write predict-data
     else:
         predictData.write("0" + " 1:11")
     
-    predictData.write(" 2:" + feature2 + " 3:" + feature3 +"\n")
+    predictData.write(" 2:" + feature2 + " 3:" + feature4 +"\n")
 
 
 
