@@ -247,13 +247,13 @@ for line in vaFile:                     #take VA50 and write predict-data
     feature4=str(alterNumber[index])
     if len(hydroFeature1[index]) == 4:
         temp = " ".join(map(str,hydroFeature1[index]))
-        feature = str(featureTable[temp])
+        feature = str(featureTable[temp])        
         predictData.write("0" + " 1:" + feature)
     else:
         predictData.write("0" + " 1:11")
     if len(hydroFeature2[index])==5:
         temp2 = " ".join(map(str,hydroFeature2[index]))
-        feature5 = str(featureTable2[temp2])
+        feature5 = str(featureTable2[temp2])        
         predictData.write(" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 + " 5:" + feature5 +"\n")
     else:
         predictData.write(" 2:" + feature2 + " 3:" + feature3 + " 4:" + feature4 + " 5:21" +"\n")
