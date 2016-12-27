@@ -229,7 +229,8 @@ for i,line in enumerate(labelFile):     #write test data
         testData.write(" 2:" + feature2+"\n")
 
 
-
+check50_6 = open("check50-6","w")
+check50_8 = open("check50-8","w")
 vaFile = open("./res/va50-lst","r")
 predictData = open("predict-data","w")
 for line in vaFile:     #take VA50 and write predict-data
@@ -237,13 +238,20 @@ for line in vaFile:     #take VA50 and write predict-data
     if len(hydroFeature[index]) == 4:
         temp = " ".join(map(str,hydroFeature[index]))
         feature = str(featureTable[temp])
+        if feature =="6":
+            tempp = " ".join(map(str,twoFilterSeq[index]))
+            check50_6.write(tempp + "\n")
+        if feature =="8":
+            tempp = " ".join(map(str,twoFilterSeq[index]))
+            check50_8.write(tempp + "\n")
         predictData.write("0" + " 1:" + feature)
     else:
         predictData.write("0" + " 1:11")
 
     feature2=str(SepLen(proteinLen[index]))
     predictData.write(" 2:" + feature2+"\n")
-
+check50_6.close()
+check50_8.close()
 forGraphic = open("./data/forGraphic.txt","w")
 labelFile.close()
 labelFile = open(labelDir,"r")          #re-open file
