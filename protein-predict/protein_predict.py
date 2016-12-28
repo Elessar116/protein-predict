@@ -110,6 +110,7 @@ excelFile2.close()
 
 temp=0      #存取每一個index前一個變數
 eachAccum=[]  #每一列相同符號的數字個數相加
+maxFourRatio=[] #前四個所佔濾波兩次後長度的比例
 hydroFeature=[] #最後輸出二維list
 for i in range(len(twoFilterSeq)):
     count=0 #算個數
@@ -121,8 +122,14 @@ for i in range(len(twoFilterSeq)):
             count+=1
         temp=item
     eachAccum.append(count*int(temp/abs(temp))) #最後一組不會切換正負號所以直接加入count的結果沒關係
+
     sortedAccum=sorted(range(len(eachAccum)), key=lambda k: abs(eachAccum[k]), reverse=True)   #將所有數字轉正號排序方便取下前四名
-    tempList=sortedAccum=sorted(sortedAccum[0:4]) #將前四名順序再次排序
+    if len(sortedAccum)>=4:
+        maxFourRatio.append((abs(eachAccum[sortedAccum[0]])+abs(eachAccum[sortedAccum[1]])+abs(eachAccum[sortedAccum[2]])+abs(eachAccum[sortedAccum[3]]))/len(twoFilterSeq[i]))
+    else: 
+        maxFourRatio.append(0)
+    
+    tempList=sorted(sortedAccum[0:4]) #將前四名順序再次排序
     hydroFeature.append([int(eachAccum[y]/abs(eachAccum[y])) for y in tempList]) #透過四個名次索引值取出後判斷正負號存入
     temp=0    #每行結束將temp初始化為0，才不會影響下一組正負號切換
     
@@ -150,7 +157,7 @@ trainData = open("train-data","w")      #open train data
 testData = open("test-data","w")        #open test data
 specialData = open("./data/special-feature.txt","w")        #特別存取6 8 的結果
 twoFilterLengthData = open("./data/twoFilterLengthData.txt","w")        #特別存取6 8 的結果
-
+ratioData = open("./data/ratioData.txt","w") #特別存取6 8 的結果
 def SepLen(x):     #transform length to feature
         if x<150:
             return 1
@@ -179,8 +186,7 @@ for i,line in enumerate(labelFile):     #write train data
             feature2=str(SepLen(proteinLen[index]))
             feature = str(featureTable[temp])               #search feature table for feature
            
-            if feature=="6": #將feature1特徵為6的紀錄
-                
+            if feature=="6": #將feature1特徵為6的紀錄                
                 specialData.write(line.split()[1]+" ")
                 specialData.write(line.split()[0])
                 for i in twoFilterSeq[index]:
@@ -213,8 +219,7 @@ for i,line in enumerate(labelFile):     #write test data
             temp = " ".join(map(str,hydroFeature[index]))
             feature = str(featureTable[temp])
             
-            if feature=="6":
-                
+            if feature=="6":                
                 specialData.write(line.split()[1]+" ")
                 specialData.write(line.split()[0])
                 for i in twoFilterSeq[index]:
@@ -228,16 +233,38 @@ for i,line in enumerate(labelFile):     #write test data
         feature2=str(SepLen(proteinLen[index]))
         testData.write(" 2:" + feature2+"\n")
 
+labelFile.close()
+labelFile = open(labelDir,"r")          #re-open file
+for i,line in enumerate(labelFile):     #吐出所有6 8 在整個長度的比例
+    index = proteinSerial.index(line.split()[1]+"\n")
+    if len(hydroFeature[index]) == 4:
+        temp = " ".join(map(str,hydroFeature[index]))
+        feature = str(featureTable[temp])            
+        if feature=="6" or feature=="8":                
+           ratioData.write(line.split()[1]+" ")
+           ratioData.write(line.split()[0]+" ")
+           ratioData.write(str(feature)+" ")
+           ratioData.write(str(maxFourRatio[index])+" ")           
+           ratioData.write("\n")  
 
+checkva100_6_8_maxFourRatio = open("./data/va100_6_8_maxFourRatio.txt","w")
+check50_6_8_maxFourRatio = open("./data/check50_6_8_maxFourRatio.txt","w")
 check50_6 = open("check50-6","w")
 check50_8 = open("check50-8","w")
-vaFile = open("./res/va50-lst","r")
+vaFile = open("./res/vate100-lst","r")
 predictData = open("predict-data","w")
 for line in vaFile:     #take VA50 and write predict-data
     index = proteinSerial.index(line.split()[0] + "\n")
     if len(hydroFeature[index]) == 4:
         temp = " ".join(map(str,hydroFeature[index]))
         feature = str(featureTable[temp])
+        if feature=="6" or feature=="8":                
+           checkva100_6_8_maxFourRatio.write(line.split()[0]+" ")
+           checkva100_6_8_maxFourRatio.write(str(feature)+" ")
+           checkva100_6_8_maxFourRatio.write(str(maxFourRatio[index])+" ")           
+           for i in twoFilterSeq[index]:
+              checkva100_6_8_maxFourRatio.write(" "+str(i))
+           checkva100_6_8_maxFourRatio.write("\n")    
         if feature =="6":
             tempp = " ".join(map(str,twoFilterSeq[index]))
             check50_6.write(tempp + "\n")
@@ -276,3 +303,6 @@ labelFile.close()
 allProtein.close()
 specialData.close()
 twoFilterLengthData.close()
+ratioData.close()
+check50_6_8_maxFourRatio.close()
+checkva100_6_8_maxFourRatio.close()
