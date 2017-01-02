@@ -181,16 +181,15 @@ for i,line in enumerate(labelFile):     #write train data
         feature2 = str(SepLen(proteinLen[index]))
         feature3 = str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
         feature4 = str(alterNumber[index])
-        feature6 = max(numpy.abs(numpy.fft.fft(twoFilterSeq[index])))
-        print(feature6)
+        feature6 = str(max(numpy.abs(numpy.fft.fft(twoFilterSeq[index]))))
         if line.split()[0]=="1":
-            trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 +"\n")  #write four times if label equals to 1
-            trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 +"\n")
-            trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 +"\n")
-            trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 +"\n")
-            trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 +"\n")
+            trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 + " 3:" + feature6 +"\n")  #write four times if label equals to 1
+            trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 + " 3:" + feature6 +"\n")
+            trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 + " 3:" + feature6 +"\n")
+            trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 + " 3:" + feature6 +"\n")
+            trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 + " 3:" + feature6 +"\n")
         else:
-            trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 +"\n")
+            trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 + " 3:" + feature6 +"\n")
         
         
 
@@ -202,20 +201,20 @@ for i,line in enumerate(labelFile):     #write test data
         feature2=str(SepLen(proteinLen[index]))
         feature3 = str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
         feature4=str(alterNumber[index])
-                
-        testData.write(line.split()[0] +" 1:" + feature3 + " 2:" + feature4 +"\n")
+        feature6 = str(max(numpy.abs(numpy.fft.fft(twoFilterSeq[index]))))
+        testData.write(line.split()[0] +" 1:" + feature3 + " 2:" + feature4 + " 3:" + feature6 +"\n")
 
 
 
-vaFile = open("./res/vate100-lst","r")
+vaFile = open("./res/va50-lst","r")
 predictData = open("predict-data","w")
 for line in vaFile:                     #take VA50 and write predict-data
     index = proteinSerial.index(line.split()[0] + "\n")
     feature2=str(SepLen(proteinLen[index]))
     feature3 =str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
     feature4=str(alterNumber[index])
-        
-    predictData.write("0" +" 1:" + feature3 + " 2:" + feature4 +"\n")
+    feature6 = str(max(numpy.abs(numpy.fft.fft(twoFilterSeq[index]))))
+    predictData.write("0" +" 1:" + feature3 + " 2:" + feature4 + " 3:" + feature6 +"\n")
 
 #predictData.close()
 #predictData = open("predict-data","r")
