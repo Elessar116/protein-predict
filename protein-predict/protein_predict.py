@@ -5,6 +5,7 @@ import statistics
 import os 
 import time
 import pprint
+import numpy
 proteinDir = "./res/allprot.fa"
 labelDir = "./res/label2prot2pair"
 allProtein = open(proteinDir,"r")
@@ -180,7 +181,8 @@ for i,line in enumerate(labelFile):     #write train data
         feature2 = str(SepLen(proteinLen[index]))
         feature3 = str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
         feature4 = str(alterNumber[index])
-                    
+        feature6 = max(numpy.abs(numpy.fft.fft(twoFilterSeq[index])))
+        print(feature6)
         if line.split()[0]=="1":
             trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 +"\n")  #write four times if label equals to 1
             trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 +"\n")
