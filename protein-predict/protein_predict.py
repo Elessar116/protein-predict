@@ -39,13 +39,13 @@ for line in allProtein:
 
 noZeroSeq = [[x for x in seq if x!=0] for seq in proteinSeq] #remove 0s in sequence
 
-min = 100
+minium = 100
 minIndex = 0
 
 for index in range(len(noZeroSeq[0])-3):     #need at least two element to compute stdev
     stdevSum = (statistics.stdev(noZeroSeq[0][:index+2]))+(statistics.stdev(noZeroSeq[0][index+2:]))
-    if stdevSum<min:
-        min = stdevSum
+    if stdevSum<minium:
+        minium = stdevSum
         minIndex = index+2
 
 
@@ -181,7 +181,7 @@ for i,line in enumerate(labelFile):     #write train data
         feature2 = str(SepLen(proteinLen[index]))
         feature3 = str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
         feature4 = str(alterNumber[index])
-        feature6 = str(max(numpy.abs(numpy.fft.fft(twoFilterSeq[index]))))
+        feature6 = str(min(numpy.abs(numpy.fft.fft(twoFilterSeq[index]))))
         if line.split()[0]=="1":
             trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 + " 3:" + feature6 +"\n")  #write four times if label equals to 1
             trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 + " 3:" + feature6 +"\n")
@@ -201,7 +201,7 @@ for i,line in enumerate(labelFile):     #write test data
         feature2=str(SepLen(proteinLen[index]))
         feature3 = str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
         feature4=str(alterNumber[index])
-        feature6 = str(max(numpy.abs(numpy.fft.fft(twoFilterSeq[index]))))
+        feature6 = str(min(numpy.abs(numpy.fft.fft(twoFilterSeq[index]))))
         testData.write(line.split()[0] +" 1:" + feature3 + " 2:" + feature4 + " 3:" + feature6 +"\n")
 
 
@@ -213,7 +213,7 @@ for line in vaFile:                     #take VA50 and write predict-data
     feature2=str(SepLen(proteinLen[index]))
     feature3 =str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
     feature4=str(alterNumber[index])
-    feature6 = str(max(numpy.abs(numpy.fft.fft(twoFilterSeq[index]))))
+    feature6 = str(min(numpy.abs(numpy.fft.fft(twoFilterSeq[index]))))
     predictData.write("0" +" 1:" + feature3 + " 2:" + feature4 + " 3:" + feature6 +"\n")
 
 #predictData.close()
