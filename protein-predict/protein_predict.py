@@ -5,6 +5,7 @@ import statistics
 import os 
 import time
 import pprint
+import numpy
 proteinDir = "./res/allprot.fa"
 labelDir = "./res/label2prot2pair"
 allProtein = open(proteinDir,"r")
