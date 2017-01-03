@@ -281,6 +281,7 @@ for line in vaFile:     #take VA50 and write predict-data
 check50_6.close()
 check50_8.close()
 forGraphic = open("./data/forGraphic.txt","w")
+forFourierGraphic = open("./data/forFourierGraphic.txt","w")
 labelFile.close()
 labelFile = open(labelDir,"r")          #re-open file
 numOfPos = 0
@@ -290,12 +291,17 @@ for line in labelFile:
     if numOfPos != 10 and line.split()[0] == "1":
         numOfPos += 1
         temp = " ".join(map(str,twoFilterSeq[index]))
+        temp2 = " ".join(map(str,numpy.abs(numpy.fft.fft(twoFilterSeq[index]))))
+        forFourierGraphic.write("1 " + temp2 + "\n")
         forGraphic.write("1 " + temp + "\n")
     elif numOfNeg != 10 and line.split()[0] == "-1":
         numOfNeg += 1
         temp = " ".join(map(str,twoFilterSeq[index]))
+        temp2 = " ".join(map(str,numpy.abs(numpy.fft.fft(twoFilterSeq[index]))))
+        forFourierGraphic.write("-1 " + temp2 + "\n")
         forGraphic.write("-1 " + temp + "\n")
-
+forFourierGraphic.close()
+forGraphic.close()
 predictData.close()
 vaFile.close()
 trainData.close()
