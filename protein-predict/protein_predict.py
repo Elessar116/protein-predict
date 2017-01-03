@@ -181,7 +181,7 @@ for i,line in enumerate(labelFile):     #write train data
         feature2 = str(SepLen(proteinLen[index]))
         feature3 = str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
         feature4 = str(alterNumber[index])
-        feature6 = str(min(numpy.abs(numpy.fft.fft(twoFilterSeq[index]))))
+        feature6 = str(numpy.mean(numpy.abs(numpy.fft.fft(twoFilterSeq[index]))))
         if line.split()[0]=="1":
             trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 + " 3:" + feature6 +"\n")  #write four times if label equals to 1
             trainData.write(line.split()[0] + " 1:" + feature3 + " 2:" + feature4 + " 3:" + feature6 +"\n")
@@ -201,7 +201,7 @@ for i,line in enumerate(labelFile):     #write test data
         feature2=str(SepLen(proteinLen[index]))
         feature3 = str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
         feature4=str(alterNumber[index])
-        feature6 = str(min(numpy.abs(numpy.fft.fft(twoFilterSeq[index]))))
+        feature6 = str(numpy.mean(numpy.abs(numpy.fft.fft(twoFilterSeq[index]))))
         testData.write(line.split()[0] +" 1:" + feature3 + " 2:" + feature4 + " 3:" + feature6 +"\n")
 
 
@@ -213,7 +213,7 @@ for line in vaFile:                     #take VA50 and write predict-data
     feature2=str(SepLen(proteinLen[index]))
     feature3 =str(round((len(proteinSeq[index])-len(twoFilterSeq[index]))/len(proteinSeq[index]),4))
     feature4=str(alterNumber[index])
-    feature6 = str(min(numpy.abs(numpy.fft.fft(twoFilterSeq[index]))))
+    feature6 = str(numpy.mean(numpy.abs(numpy.fft.fft(twoFilterSeq[index]))))
     predictData.write("0" +" 1:" + feature3 + " 2:" + feature4 + " 3:" + feature6 +"\n")
 
 #predictData.close()
