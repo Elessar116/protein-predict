@@ -11,6 +11,10 @@ labelDir = "./res/label2prot2pair"
 allProtein = open(proteinDir,"r")
 labelFile = open(labelDir,"r")
 
+
+
+
+
 proteinSerial = []
 proteinSeq = []
 proteinLen=[]
